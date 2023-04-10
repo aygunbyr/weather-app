@@ -15,7 +15,7 @@ const WeatherForm = () => {
       <select
         value={selected}
         onChange={(event) => setSelected(event.target.value)}
-        className="bg-gray-200 border-spacing-4 border-2 border-gray-200 form-control"
+        className="px-2 py-2 rounded-lg border-2 border-gray-200 font-semibold"
       >
         {cities.map((item, key) => (
           <option
