@@ -6,12 +6,15 @@ import {
   Dispatch,
   SetStateAction,
 } from 'react'
+import axios from 'axios'
 import cities from '@/data/cities.json'
 import { CityData } from '@/types/citydata'
+import { ForecastData } from '@/types/forecastdata'
 
 // Type declaration: Values that we pass to provider
-type ProviderValues = {
-  weather: {} | null
+export type ProviderValues = {
+  weather: ForecastData | null
+  city: string
   setCity: Dispatch<SetStateAction<string>>
 }
 
@@ -23,14 +26,26 @@ type Props = {
 // Initialize context
 const WeatherContext = createContext<ProviderValues | null>(null)
 
+// Fetch weather data
+const getWeather = async (lat: string, lon: string) => {
+  const requestUrl = `${process.env.NEXT_PUBLIC_OPENWEATHER_API_URL}?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`
+  const { data } = await axios.get(requestUrl)
+
+  console.log('getWeather çalıştı')
+  return data
+}
+
 export const WeatherProvider: React.FC<Props> = ({ children }) => {
   // States
   const [city, setCity] = useState<string>('İstanbul')
-  const [weather, setWeather] = useState<{} | null>(null)
+  const [weather, setWeather] = useState<ForecastData | null>(null)
 
-  // Update weather data when selected city change
+  // Update weather data when selected city is changed
   useEffect(() => {
-    let selectedCity
+    let selectedCity: CityData | undefined
+    let weatherData
+
+    console.log('city değişti useeffect çalıştı')
 
     // Find city in data
     cities.map((item: CityData) => {
@@ -40,16 +55,22 @@ export const WeatherProvider: React.FC<Props> = ({ children }) => {
     })
 
     if (selectedCity) {
-      // Print to test
-      console.log(selectedCity)
-    }
+      // IIFE for asynchronous fetch operation
+      ;(async () => {
+        console.log('iife çalıştı')
+        weatherData = await getWeather(
+          selectedCity.latitude,
+          selectedCity.longitude
+        )
 
-    // TODO: Update weather
-    setWeather({})
+        // Update weather
+        setWeather(weatherData)
+      })()
+    }
   }, [city])
 
   return (
-    <WeatherContext.Provider value={{ weather, setCity }}>
+    <WeatherContext.Provider value={{ weather, city, setCity }}>
       {children}
     </WeatherContext.Provider>
   )
