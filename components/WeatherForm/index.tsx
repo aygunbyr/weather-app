@@ -8,7 +8,6 @@ const WeatherForm = () => {
 
   useEffect(() => {
     weather?.setCity(selected)
-    console.log('selected değişti useeffect çalıştı')
   }, [selected])
 
   return (

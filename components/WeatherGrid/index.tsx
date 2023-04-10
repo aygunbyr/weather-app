@@ -5,10 +5,6 @@ const WeatherGrid = () => {
   const weather = useWeather()
   const data = weather?.weather
 
-  useEffect(() => {
-    console.log('Data değişti useeffect çalıştı')
-  }, [weather])
-
   return (
     <div className="grid lg:grid-cols-2 gap-5">
       <div className="p-2">
