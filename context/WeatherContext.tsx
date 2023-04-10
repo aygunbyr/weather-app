@@ -31,7 +31,6 @@ const getWeather = async (lat: string, lon: string) => {
   const requestUrl = `${process.env.NEXT_PUBLIC_OPENWEATHER_API_URL}?lat=${lat}&lon=${lon}&appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}&units=metric`
   const { data } = await axios.get(requestUrl)
 
-  console.log('getWeather çalıştı')
   return data
 }
 
@@ -45,8 +44,6 @@ export const WeatherProvider: React.FC<Props> = ({ children }) => {
     let selectedCity: CityData | undefined
     let weatherData
 
-    console.log('city değişti useeffect çalıştı')
-
     // Find city in data
     cities.map((item: CityData) => {
       if (item.name === city) {
@@ -57,7 +54,6 @@ export const WeatherProvider: React.FC<Props> = ({ children }) => {
     if (selectedCity) {
       // IIFE for asynchronous fetch operation
       ;(async () => {
-        console.log('iife çalıştı')
         weatherData = await getWeather(
           selectedCity.latitude,
           selectedCity.longitude
