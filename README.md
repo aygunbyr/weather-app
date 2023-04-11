@@ -8,6 +8,7 @@ I have been developing this project for educational purposes. This project helpe
 - Next.js
 - Typescript
 - TailwindCss
+- OpenWeatherMap API
 - Axios
 - Moment
 
