@@ -1,12 +1,13 @@
 import { useEffect, useState, SetStateAction, Dispatch } from 'react'
-import { useWeather } from '@/context/WeatherContext'
+import { defaultCity, useWeather } from '@/context/WeatherContext'
 import cities from '@/data/cities.json'
 
 const WeatherForm = () => {
-  // State of selected city
-  const [selected, setSelected] = useState('İstanbul')
   // Context of weather
   const weather = useWeather()
+
+  // State of selected city
+  const [selected, setSelected] = useState<string>(weather?.city || defaultCity)
 
   // Update weather when user selects a different city
   useEffect(() => {

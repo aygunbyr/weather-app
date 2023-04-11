@@ -1,3 +1,4 @@
+// Context, hooks and types from React library
 import {
   createContext,
   useContext,
@@ -6,10 +7,20 @@ import {
   Dispatch,
   SetStateAction,
 } from 'react'
+
+// Axios library for fetching weather data
 import axios from 'axios'
+
+// Moment library for formatting epoch time
 import moment from 'moment'
+
+// Cities of Turkey, mock json data
 import cities from '@/data/cities.json'
+
+// Type declaration of CityData
 import { CityData } from '@/types/citydata'
+
+// Type declarations ForecastData, ListData
 import { ForecastData, ListData } from '@/types/forecastdata'
 
 // Type declaration: Values that we pass to provider
@@ -25,6 +36,19 @@ type Props = {
   children: React.ReactNode
 }
 
+// Default city value
+export const defaultCity = 'İstanbul'
+
+// If city selected before, get city from localStorage then use
+let initialCity: string
+const localStorageCity =
+  typeof window != 'undefined'
+    ? window.localStorage.getItem('weatherapp.city')
+    : null
+localStorageCity
+  ? (initialCity = localStorageCity)
+  : (initialCity = defaultCity)
+
 // Initialize context
 const WeatherContext = createContext<ProviderValues | null>(null)
 
@@ -38,8 +62,14 @@ const getWeather = async (lat: string, lon: string) => {
 
 export const WeatherProvider: React.FC<Props> = ({ children }) => {
   // States
-  const [city, setCity] = useState<string>('İstanbul')
+  console.log('Initial city ' + initialCity)
+  // State of selected city
+  const [city, setCity] = useState<string>(initialCity)
+
+  // State of weather data
   const [weather, setWeather] = useState<ForecastData | null>(null)
+
+  // State of five day 12pm weather conditions
   const [fiveDay, setFiveday] = useState<ListData[]>([])
 
   // Update weather data when selected city is changed
@@ -75,6 +105,9 @@ export const WeatherProvider: React.FC<Props> = ({ children }) => {
 
         // Update weather
         setWeather(weatherData)
+
+        // Update localStorage
+        localStorage.setItem('weatherapp.city', city)
       })()
     }
   }, [city])
