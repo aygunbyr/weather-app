@@ -39,7 +39,7 @@ type Props = {
 // Default city value
 export const defaultCity = 'İstanbul'
 
-// If city selected before, get city from localStorage then use
+// If city was selected before, get city from localStorage then use
 let initialCity: string
 const localStorageCity =
   typeof window != 'undefined'
@@ -61,8 +61,6 @@ const getWeather = async (lat: string, lon: string) => {
 }
 
 export const WeatherProvider: React.FC<Props> = ({ children }) => {
-  // States
-  console.log('Initial city ' + initialCity)
   // State of selected city
   const [city, setCity] = useState<string>(initialCity)
 
@@ -112,6 +110,7 @@ export const WeatherProvider: React.FC<Props> = ({ children }) => {
     }
   }, [city])
 
+  // Values that we pass to provider
   const values = {
     weather,
     fiveDay,
