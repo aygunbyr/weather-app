@@ -7,13 +7,15 @@ import {
   SetStateAction,
 } from 'react'
 import axios from 'axios'
+import moment from 'moment'
 import cities from '@/data/cities.json'
 import { CityData } from '@/types/citydata'
-import { ForecastData } from '@/types/forecastdata'
+import { ForecastData, ListData } from '@/types/forecastdata'
 
 // Type declaration: Values that we pass to provider
 export type ProviderValues = {
   weather: ForecastData | null
+  fiveDay: ListData[]
   city: string
   setCity: Dispatch<SetStateAction<string>>
 }
@@ -38,11 +40,13 @@ export const WeatherProvider: React.FC<Props> = ({ children }) => {
   // States
   const [city, setCity] = useState<string>('İstanbul')
   const [weather, setWeather] = useState<ForecastData | null>(null)
+  const [fiveDay, setFiveday] = useState<ListData[]>([])
 
   // Update weather data when selected city is changed
   useEffect(() => {
     let selectedCity: CityData | undefined
-    let weatherData
+    let weatherData: ForecastData | null
+    let arr: ListData[] = []
 
     // Find city in data
     cities.map((item: CityData) => {
@@ -59,16 +63,31 @@ export const WeatherProvider: React.FC<Props> = ({ children }) => {
           selectedCity.longitude
         )
 
+        // Extract five day 12pm weather forecast
+        weatherData?.list.map((item) => {
+          if (moment.unix(item.dt).hours() === 12) {
+            arr.push(item)
+          }
+        })
+
+        // Set five day forecast to its state
+        setFiveday([...arr])
+
         // Update weather
         setWeather(weatherData)
       })()
     }
   }, [city])
 
+  const values = {
+    weather,
+    fiveDay,
+    city,
+    setCity,
+  }
+
   return (
-    <WeatherContext.Provider value={{ weather, city, setCity }}>
-      {children}
-    </WeatherContext.Provider>
+    <WeatherContext.Provider value={values}>{children}</WeatherContext.Provider>
   )
 }
 
