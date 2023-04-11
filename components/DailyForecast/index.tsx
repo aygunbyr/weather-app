@@ -10,12 +10,21 @@ const DailyForecast = (props: Props) => {
     <div className="min-w-[150px] min-h-[100px] justify-center items-center">
       <div className="p-4">
         {/* Day of the week (Sunday, Monday etc.) */}
-        <p>{moment.unix(props.data.dt).format('dddd')}</p>
+        <strong>{moment.unix(props.data.dt).format('dddd')}</strong>
         {/* Daily minimum and maximum temperatures */}
-        <p>
-          Max {props.data.main.temp_max.toFixed(0)} | Min{' '}
-          {props.data.main.temp_min.toFixed(0)}
-        </p>
+        <div className="flex flex-row text-lg font-bold">
+          {/* <span className="text-red-500">Max&nbsp;</span> */}
+          <p className="text-red-500 mr-4">
+            {props.data.main.temp_max.toFixed(0)}
+            <span className="text-black"> °C</span>
+          </p>
+
+          {/* <span className="text-blue-500">Min&nbsp;</span> */}
+          <p className="text-blue-500">
+            {props.data.main.temp_min.toFixed(0)}{' '}
+            <span className="text-black"> °C</span>
+          </p>
+        </div>
         {/* Icon image from OpenWeatherMap */}
         <div>
           <img
