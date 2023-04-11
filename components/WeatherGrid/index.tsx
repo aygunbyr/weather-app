@@ -1,21 +1,15 @@
-import { useEffect } from 'react'
 import { useWeather } from '@/context/WeatherContext'
+import DailyForecast from '../DailyForecast'
 
 const WeatherGrid = () => {
   const weather = useWeather()
   const data = weather?.weather
 
   return (
-    <div className="grid lg:grid-cols-2 gap-5">
-      <div className="p-2">
-        <div className="text-3xl ">
-          {data?.list[0].main?.temp.toFixed(0)} °C
-        </div>
-        <div className="text-sm">
-          Hissedilen : {data?.list[0].main?.feels_like.toFixed(0)} °C
-        </div>
-      </div>
-      <div className="p-2">İkinci kısım</div>
+    <div className="flex flex-col md:flex-row w-100 justify-between bg-gray-200/20">
+      {weather?.fiveDay.map((item, index) => (
+        <DailyForecast key={index} data={item} />
+      ))}
     </div>
   )
 }
