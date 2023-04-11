@@ -1,4 +1,4 @@
-type ListData = {
+export type ListData = {
   dt: number
   main: {
     temp: number
