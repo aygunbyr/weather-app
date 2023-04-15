@@ -4,5 +4,4 @@ export type CityData = {
   latitude: string
   longitude: string
   population: number
-  region: string
 }

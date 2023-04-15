@@ -15,7 +15,7 @@ const WeatherForm = () => {
   }, [selected])
 
   return (
-    <div className="p-2">
+    <div className="p-2 flex justify-center">
       {/* HTML Select Element to select city */}
       <select
         value={selected}
