@@ -18,6 +18,12 @@ You can view [live demo here](https://weather-app-aygunbyr.vercel.app/)
 
 ## Getting Started
 
+Install required NPM packages
+
+```
+npm install
+```
+
 Run the development server
 
 ```
